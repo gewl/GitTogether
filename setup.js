@@ -26,10 +26,10 @@ module.exports = {
       file: 'app/store/configureStore.development.js',
       pattern: /counterActions/
     },
-    {
-      file: 'app/app.global.css',
-      clear: true
-    },
+    // {
+    //   file: 'app/app.global.css',
+    //   clear: true
+    // },
     {
       file: 'app/routes.js',
       pattern: /CounterPage/
