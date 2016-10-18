@@ -19,7 +19,7 @@ export function addTeamMember(input) {
 		name = input
 	}
 	return (dispatch, getState) => {
-		axios.post(process.env.SERVER_URL + `/api/channels/${name}`, { repoId: getState().repo.channelName, userName: name })
+		axios.post(`https://gittogether.herokuapp.com/api/channels/${name}`, { repoId: getState().repo.channelName, userName: name })
 			// axios.post(`http://localhost:1337/api/channels/${name}`, {repoId: getState().repo.channelName, userName: name})
 			.then(() => {
 				dispatch({
@@ -58,7 +58,7 @@ export function changeSelectedTeam(channelId) {
 
 export function removeTeamMember(id, repoId) {
 	return (dispatch, getState) => {
-		axios.put(process.env.SERVER_URL + `/api/channels/remove?channelId=${getState().repo.channelName}&userName=${id}`)
+		axios.put(`https://gittogether.herokuapp.com/api/channels/remove?channelId=${getState().repo.channelName}&userName=${id}`)
 			// return axios.put(`http://localhost:1337/api/channels/remove?channelId=${getState().repo.channelName}&userName=${id}`)
 			.then(() => {
 				dispatch({
@@ -79,7 +79,7 @@ export function refreshOnline(currentlyOnline) {
 
 export function refreshTeamMembers() {
 	return (dispatch, getState) => {
-		axios.get(process.env.SERVER_URL + `/api/users/${getState().auth.id}`)
+		axios.get(`https://gittogether.herokuapp.com/api/users/${getState().auth.id}`)
 		// axios.get(`http://localhost:1337/api/users/${getState().auth.id}`)
 		.then( user => {
 			dispatch({
@@ -95,7 +95,7 @@ export function refreshTeamMembers() {
 export function getUserChanges(username) {
   return (dispatch, getState) => {
 		let channelName = getState().repo.channelName.split('/').join('*');
-			axios.get(process.env.SERVER_URL + `/api/events/user/${username}?repoId=${channelName}`)
+	  axios.get(`https://gittogether.herokuapp.com/api/events/user/${username}?repoId=${channelName}`)
 			.then(userEvents => {
 			dispatch({
 				type: GET_USER_CHANGES,

@@ -23,7 +23,7 @@ export function watchFile(repoId, fileName) {
 			repoId,
 			userId: state.auth.id
 		};
-		axios.post(process.env.SERVER_URL + '/api/files/', payload)
+		axios.post('https://gittogether.herokuapp.com/api/files/', payload)
 			.then(fileWatch => {
 				dispatch({
 					type: WATCH_FILE,
@@ -50,7 +50,7 @@ export function unwatchFile() {
       }
 		};
 
-		axios.delete(process.env.SERVER_URL + '/api/files/', payload)
+		axios.delete('https://gittogether.herokuapp.com/api/files/', payload)
 			.then(() => {
 				dispatch({
 					type: UNWATCH_FILE,
@@ -80,7 +80,7 @@ export function getWatch() {
 		let watchList = [];
 		let channelName = getState().repo.channelName;
 		let watchArray = [];
-		axios.get(process.env.SERVER_URL + '/api/files/?userId=' + userId)
+		axios.get('https://gittogether.herokuapp.com/api/files/?userId=' + userId)
 			.then((watchFileList) => {
 
 				watchFileList.data.forEach((e) => {

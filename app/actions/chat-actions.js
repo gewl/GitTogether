@@ -16,7 +16,7 @@ export function addMessage(message) {
 
 export function loadMessages(channelName) {
 	return (getState, dispatch) => {
-		axios.get(`${process.env.SERVER_URL}/api/chat/${channelName}`)
+		axios.get(`https://gittogether.herokuapp.com/api/chat/${channelName}`)
 			.then(result => {
 				let chatHistory = result.data.map(chat => {
 					return {

@@ -17,7 +17,7 @@ export function loadChannels() {
 				let userId = state.auth.id
 				currentUser = state.auth.currentUser
 				userStorage = channelStorage[currentUser] ? channelStorage[ currentUser ] : {}
-				return axios.get(process.env.SERVER_URL + `/api/users/${userId}`)
+				return axios.get(`https://gittogether.herokuapp.com/api/users/${userId}`)
 			})
 			.then(result => {
 				let user = result.data

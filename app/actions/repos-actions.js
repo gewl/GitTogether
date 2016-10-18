@@ -47,7 +47,7 @@ export function addChannel(channel) {
 			.then(() => {
 				channels = Object.keys(userStorage)
 
-				return axios.post(process.env.SERVER_URL + `/api/channels/${userId}`, {
+				return axios.post(`https://gittogether.herokuapp.com/api/channels/${userId}`, {
 					repoId: channelName
 				})
 			})
@@ -80,7 +80,7 @@ export function removeChannel(id) {
 			delete channelStorage[currentUser][id]
 			storage.set('channels', channelStorage, err => console.error)
 			let channels = Object.keys(channelStorage[currentUser])
-			return axios.put(process.env.SERVER_URL + `/api/channels/remove?channelId=${id}&userId=${userId}`)
+			return axios.put(`https://gittogether.herokuapp.com/api/channels/remove?channelId=${id}&userId=${userId}`)
 			// return axios.put(`http://localhost:1337/api/channels/remove?channelId=${id}&userId=${userId}`)
 				.then(() => {
 					dispatch({

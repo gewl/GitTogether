@@ -59,7 +59,7 @@ export function getRepoTree(repo) {
 					tree
 				})
 				let channelName = repo.split('/').join('*');
-				return axios.get(process.env.SERVER_URL + `/api/channels/${channelName}`)
+				return axios.get(`https://gittogether.herokuapp.com/api/channels/${channelName}`)
 			}).then((channel) => {
 				let events = channel.data.events
 				let chatHistory = channel.data.chats.map(chat => {
@@ -105,7 +105,7 @@ export function getRepoTree(repo) {
 				userId = state.auth.id;
 				let watchList = [];
 				getOnline(repo)
-				return axios.get(process.env.SERVER_URL + '/api/files/?userId=' + userId)
+				return axios.get('https://gittogether.herokuapp.com/api/files/?userId=' + userId)
 
 			})
 			.then(watchFileList => {

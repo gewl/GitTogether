@@ -38,7 +38,7 @@ export function setUser(currentUser, token, id) {
 					.then(result => {
 						channelStorage = result
 						return (dispatch, getState) => {
-							axios.get(process.env.SERVER_URL + `/api/users/${id}`)
+							axios.get(`https://gittogether.herokuapp.com/api/users/${id}`)
 							// axios.get(`http://localhost:1337/api/users/${id}`)
 								.then(result => {
 									let user = result.data
@@ -71,7 +71,7 @@ export function setUser(currentUser, token, id) {
 export function login() {
 	return function(dispatch, getState) {
 		let options = {
-			client_id: process.env.CLIENT_ID,
+			client_id: '02c613b6855930709237',
 			scopes: ['repo']
 		}
 
@@ -93,30 +93,22 @@ export function login() {
 
 			if (code) {
 				let fetchRequest = {
-					method: "POST",
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						code: code
-					})
+					code
 				}
 
-				return fetch(process.env.SERVER_URL + '/api/auth/github', fetchRequest)
-				// return fetch('http://localhost:1337/api/auth/github', fetchRequest)
-					.then(r => r.json())
+				return axios.post('https://gittogether.herokuapp.com/api/auth/github', fetchRequest)
 					.then(response => {
+						console.log(response)
 						dispatch({
 							type: SET_USER,
-							currentUser: response.username,
-							token: response.token,
-							id: response.id
+							currentUser: response.data.username,
+							token: response.data.token,
+							id: response.data.id
 						})
 						return storage.setAsync('user', {
-							currentUser: response.username,
-							token: response.token,
-							id: response.id
+							currentUser: response.data.username,
+							token: response.data.token,
+							id: response.data.id
 						})
 					})
 			} else if (error) {
