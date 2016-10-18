@@ -13,7 +13,8 @@ const config = validate(merge(baseConfig, {
 
   entry: [
     'babel-polyfill',
-    './app/index'
+	  './app/index',
+	  './app.global.css'
   ],
 
   output: {
@@ -30,7 +31,6 @@ const config = validate(merge(baseConfig, {
           'css-loader'
         )
       },
-
       // Pipe other styles through css modules and apend to style.css
       {
         test: /^((?!\.global).)*\.css$/,
@@ -38,6 +38,14 @@ const config = validate(merge(baseConfig, {
           'style-loader',
           'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
         )
+      },
+      {
+        test: /^((?!\.global).)*\.scss$/,
+        loaders: [
+          'style-loader',
+          'css-loader?',
+          'sass'
+        ]
       }
     ]
   },

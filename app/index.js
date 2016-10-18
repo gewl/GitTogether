@@ -5,14 +5,14 @@ import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import routes from './routes';
 import configureStore from './store/configureStore';
-import './app.global.css';
+// import './app.global.css';
 import Promise from 'bluebird'
 const storage = Promise.promisifyAll(require('electron-json-storage'))
 
 let state = {
   auth: {}
 };
-storage.clear(err => console.error)
+// storage.clear(err => console.error)
 storage.getAsync('user')
 	.then(result => {
 		state.auth.currentUser = result.currentUser;

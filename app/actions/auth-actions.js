@@ -77,8 +77,9 @@ export function login() {
 
 		let authWindow = new BrowserWindow({ width: 800, height: 600, show: false, 'node-integration': false })
 		let githubUrl = 'https://github.com/login/oauth/authorize?'
-		let authUrl = githubUrl + 'client_id=' + options.client_id + '&scope=' + options.scopes;
+		let authUrl = githubUrl + 'client_id=02c613b6855930709237&scope=' + options.scopes;
 		authWindow.loadURL(authUrl)
+		authWindow.openDevTools()
 		authWindow.show()
 
 		function handleCallback (url) {

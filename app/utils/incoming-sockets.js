@@ -18,7 +18,9 @@ export function instantiateSockets (state, dispatch) {
 	dispatch(AuthActions.socketsStarted())
 	let currentUser = state.auth.currentUser
 
-	socket.emit('passLogin', currentUser)
+	if (currentUser) {
+		socket.emit('passLogin', currentUser)
+	}
 
 	socket.on('receiveMessage', body => {
 		let message = body.message

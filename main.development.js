@@ -75,8 +75,8 @@ function createWindow() {
     mainWindow = null;
   });
 
-  if (process.env.NODE_ENV === 'development') {
-    // mainWindow.openDevTools();
+  // if (process.env.NODE_ENV === 'development') {
+    mainWindow.openDevTools();
     mainWindow.webContents.on('context-menu', (e, props) => {
       const { x, y } = props;
 
@@ -87,7 +87,7 @@ function createWindow() {
         }
       }]).popup(mainWindow);
     });
-  }
+  // }
 
   if (process.platform === 'darwin') {
     template = [{
