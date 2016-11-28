@@ -87,6 +87,7 @@ describe('async repo actions', () => {
 		return store.dispatch(RepoActions.getUserRepos())
 			.then(() => {
 				expect(store.getActions()).to.deep.equal(expectedActions)
+				store.clearActions()
 			})
 	})
 
@@ -206,6 +207,7 @@ describe('async repo actions', () => {
 			})
 			.then(() => {
 				expect(store.getActions()).to.deep.equal(expectedActions)
+				store.clearActions()
 			})
 			.then(() => {
 				return storage.setAsync('channels', originalChannels)

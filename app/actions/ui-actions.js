@@ -20,7 +20,6 @@ export function toggleComponent(component) {
       type: ACTIVE_COMPONENT,
       component
     });
-
   }
 }
 
