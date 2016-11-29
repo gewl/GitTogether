@@ -34,7 +34,7 @@ describe('sync ui actions', () => {
 	})
 
 	describe('toggleTree action', () => {
-		it('should dispatch TOGGLE_TREE action',() => {
+		it('should dispatch TOGGLE_TREE action', () => {
 			const component = "Test component"
 			const expectedActions = [{
 				type: 'TOGGLE_TREE',

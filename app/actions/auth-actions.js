@@ -18,54 +18,51 @@ export function socketsStarted() {
 	}
 }
 
+function setUserResolve(currentUser, token, id) {
+	return {
+		type: SET_USER,
+		currentUser,
+		token,
+		id
+	}
+}
+
 export function setUser(currentUser, token, id) {
-	var channelStorage
-	storage.setAsync('user', {
-		currentUser: currentUser,
-		token: token,
-		id: id
-	})
-		.then(() => {
-			if (!currentUser) {
-				return {
-					type: SET_USER,
-					currentUser: null,
-					token: null,
-					id: null
-				}
-			} else {
-				return storage.getAsync('channels')
-					.then(result => {
-						channelStorage = result
-						return (dispatch, getState) => {
-							axios.get(process.env.SERVER_URL + `/api/users/${id}`)
-							// axios.get(`http://localhost:1337/api/users/${id}`)
-								.then(result => {
-									let user = result.data
-									let userStorage = channelStorage[currentUser] ? channelStorage[ currentUser ] : {}
-									if (user.channels) {
-										user.channels.forEach(channel => {
-											if (!userStorage.hasOwnProperty(channel.repoId)) {
-												userStorage[channel.repoId] = null
-											}
-										})
-										storage.set('channels', {...channelStorage, [currentUser]: userStorage})
-									} else {
-										storage.set('channels', {...channelStorage, [currentUser]: {}})
+	return (dispatch, getState) => {
+		var channelStorage
+		return storage.setAsync('user', {
+			currentUser: currentUser,
+			token: token,
+			id: id
+		})
+			.then(() => {
+				if (!currentUser) {
+					dispatch(setUserResolve(null, null, null))
+				} else {
+					return storage.getAsync('channels')
+						.then(result => {
+							channelStorage = result
+							return axios.get(`${process.env.SERVER_URL}/api/users/${id}`)
+						})
+						.then(result => {
+							let user = result.data
+							let userStorage = channelStorage[currentUser] ? channelStorage[ currentUser ] : {}
+							if (user.channels) {
+								user.channels.forEach(channel => {
+									if (!userStorage.hasOwnProperty(channel.repoId)) {
+										userStorage[channel.repoId] = null
 									}
 								})
-								.then(() => dispatch({
-									type: SET_USER,
-									currentUser,
-									token,
-									id
-								}))
-						}
-					})
-			}
-		})
-
-		.catch(err => console.error)
+								return storage.setAsync('channels', {...channelStorage, [currentUser]: userStorage})
+							} else {
+								return storage.setAsync('channels', {...channelStorage, [currentUser]: {}})
+							}
+						})
+						.then(() => dispatch(setUserResolve(currentUser, token, id)))
+				}
+			})
+			.catch(err => console.log(err))
+	}
 }
 
 export function login() {
@@ -106,12 +103,7 @@ export function login() {
 					.then(r => r.json())
 					.then(response => {
 						console.log(response)
-						dispatch({
-							type: SET_USER,
-							currentUser: response.username,
-							token: response.token,
-							id: response.id
-						})
+						dispatch(setUserResolve(response.username, response.token, response.id))
 						return storage.setAsync('user', {
 							currentUser: response.username,
 							token: response.token,
@@ -138,12 +130,7 @@ export function login() {
 export function logout(githubUsername) {
 	return function(dispatch, getState) {
 		stopSockets()
-		dispatch({
-			type: SET_USER,
-			currentUser: null,
-			token: null,
-			id: null
-		})
+		dispatch(setUserResolve(null, null, null))
 		dispatch(push('/'))
 	}
 }
