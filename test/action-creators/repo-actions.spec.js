@@ -5,8 +5,6 @@ import Promise from 'bluebird';
 import * as RepoActions from '../../app/actions/repo-actions.js';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
 const storage = Promise.promisifyAll(require('electron-json-storage'))
 const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)

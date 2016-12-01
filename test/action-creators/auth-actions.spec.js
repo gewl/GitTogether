@@ -3,8 +3,6 @@ import Promise from 'bluebird';
 import * as AuthActions from '../../app/actions/auth-actions.js';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
 const storage = Promise.promisifyAll(require('electron-json-storage'))
 import { mock } from '../setup.js'
 
@@ -64,7 +62,6 @@ describe('async auth actions', () => {
 				id
 			}]
 
-			console.log(`${process.env.SERVER_URL}/api/users/${id}`)
 			mock.onAny()
 				.reply(200, {
 					channels: [{

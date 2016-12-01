@@ -7,10 +7,17 @@ const storage = Promise.promisifyAll(require('electron-json-storage'))
 import GitHub from 'github-api';
 import axios from 'axios';
 
+function loadChannelsSuccess(channels) {
+	return {
+		type: LOAD_CHANNELS,
+		channels
+	}
+}
+
 export function loadChannels() {
 	return (dispatch, getState) => {
 		let userStorage, channelStorage, currentUser, channels
-		storage.getAsync('channels')
+		return storage.getAsync('channels')
 			.then(result => {
 				channelStorage = result
 				let state = getState()
@@ -21,24 +28,18 @@ export function loadChannels() {
 			})
 			.then(result => {
 				let user = result.data
-
 				if (user.channels) {
 					user.channels.forEach(channel => {
 						if (!userStorage.hasOwnProperty(channel.repoId)) {
 							userStorage[channel.repoId] = null
 						}
 					})
-					storage.set('channels', {...channelStorage, [currentUser]: userStorage})
-				} else {
-					storage.set('channels', {...channelStorage, [currentUser]: {}})
-				}
+				} 					
 				channels = Object.keys(channelStorage[currentUser])
+				dispatch(loadChannelsSuccess(channels))
+				return storage.setAsync('channels', {...channelStorage, [currentUser]: userStorage})
 			})
-			.then(() => dispatch({
-				type: LOAD_CHANNELS,
-				channels
-			}))
-			.catch(err => console.error(err))
+			.catch(err => console.log(err))
 	}
 }
 
